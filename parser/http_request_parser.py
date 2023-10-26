@@ -17,6 +17,10 @@ class HttpRequestParser:
     def parse(self):
         if not self.done_parsing_firstline:
             self.parse_firstline()
+            self.parse()
+        elif not self.done_parsing_header:
+            self.parse_header()
+            self.parse()
 
     def parse_firstline(self):
         first_line = self.buffer.pop(separator="\r\n")
@@ -29,6 +33,13 @@ class HttpRequestParser:
             })
             self.done_parsing_firstline = True
 
-    # def parse_header(self):
+    def parse_header(self):
+        name = self.buffer.pop(separator=": ")
+        value = self.buffer.pop(separator="\r\n")
+        if name is not None:
+            # 待補上 content length
+            self.parsed_data.update({ name: value })
+        else:
+            self.done_parsing_header = True
 
     # def parse_body(self):

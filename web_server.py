@@ -10,12 +10,11 @@ listen_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 listen_socket.bind((HOST, PORT))
 listen_socket.listen(1)
 
-parser = HttpRequestParser()
-
 print(f"Serving HTTP on port {PORT} ...")
 
 while True:
     client_connection, client_address = listen_socket.accept()
+    parser = HttpRequestParser()
     request_data = client_connection.recv(1024).decode("utf-8")
     print(parser.feed_data(request_data))
     http_response = b"""\
