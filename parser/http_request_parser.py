@@ -21,6 +21,9 @@ class HttpRequestParser:
         elif not self.done_parsing_header:
             self.parse_header()
             self.parse()
+        elif not self.done_parsing_body:
+            self.parse_body()
+            self.parse()
 
     def parse_firstline(self):
         first_line = self.buffer.pop(separator="\r\n")
@@ -34,12 +37,20 @@ class HttpRequestParser:
             self.done_parsing_firstline = True
 
     def parse_header(self):
-        name = self.buffer.pop(separator=": ")
-        value = self.buffer.pop(separator="\r\n")
-        if name is not None:
-            # 待補上 content length
-            self.parsed_data.update({ name: value })
+        line = self.buffer.pop(separator="\r\n")
+        if line is not None:
+            if line:
+                name, value = line.split(": ", maxsplit=1)
+                if name.lower() == "content-length":
+                    self.expected_body_length = int(value)
+                self.parsed_data.update({ name: value })
+            else:
+                self.done_parsing_header = True
         else:
             self.done_parsing_header = True
 
-    # def parse_body(self):
+    def parse_body(self):
+        data = self.buffer.popAll()
+        self.expected_body_length = len(data)
+        self.parsed_data.update({ 'body': data })
+        self.done_parsing_body = True
