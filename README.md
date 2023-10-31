@@ -1,5 +1,13 @@
 # python-web-server
 
+## TODO
+
+- [x] HTTP Request Parser
+- [ ] Body Parser
+- [ ] Sending Response
+- [ ] Error handle / Validation
+- [ ] Threading
+
 ## Resource
 
 - [Let’s Build A Web Server. Part 1.](https://ruslanspivak.com/lsbaws-part1/)
