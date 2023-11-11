@@ -27,9 +27,9 @@ class HttpRequestParser:
         if first_line is not None:
             http_method, url, http_version = first_line.split()
             self.parsed_data.update({
-                "http_method": http_method,
+                "http-method": http_method,
                 "url": url,
-                "http_version": http_version
+                "http-version": http_version
             })
             self.done_parsing_firstline = True
 
@@ -40,7 +40,7 @@ class HttpRequestParser:
                 name, value = line.split(": ", maxsplit=1)
                 if name.lower() == "content-length":
                     self.expected_body_length = int(value)
-                self.parsed_data.update({ name: value })
+                self.parsed_data.update({ name.lower(): value })
             else:
                 self.done_parsing_header = True
         else:
