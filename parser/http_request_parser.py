@@ -1,4 +1,5 @@
 from parser.buffer import Buffer
+from parser.form_data_parser import FormDataParser
 
 class HttpRequestParser:
     def __init__(self):
@@ -49,5 +50,10 @@ class HttpRequestParser:
     def parse_body(self):
         data = self.buffer.popAll()
         self.expected_body_length = len(data)
-        self.parsed_data.update({ 'body': data })
+        content_type, rest = self.parsed_data['content-type'].split('; ')
+        if content_type == 'multipart/form-data':
+            form_data_parser = FormDataParser()
+            boundary = '--' + rest[9:] # 感覺不是一個好方法
+            body = form_data_parser.feed_data(data[len(boundary):], boundary)
+            self.parsed_data.update({ 'body': body })
         self.done_parsing_body = True
