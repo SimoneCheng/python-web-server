@@ -3,7 +3,7 @@
 ## TODO
 
 - [x] HTTP Request Parser
-- [ ] Body Parser
+- [ ] Body Parser: FormData, JSON
 - [ ] Sending Response
 - [ ] Error handle / Validation
 - [ ] Threading
