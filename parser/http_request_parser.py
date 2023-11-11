@@ -15,15 +15,12 @@ class HttpRequestParser:
         return self.parsed_data
 
     def parse(self):
-        if not self.done_parsing_firstline:
+        while not self.done_parsing_firstline:
             self.parse_firstline()
-            self.parse()
-        elif not self.done_parsing_header:
+        while not self.done_parsing_header:
             self.parse_header()
-            self.parse()
-        elif not self.done_parsing_body:
+        while not self.done_parsing_body:
             self.parse_body()
-            self.parse()
 
     def parse_firstline(self):
         first_line = self.buffer.pop(separator="\r\n")
