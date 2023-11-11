@@ -6,12 +6,14 @@ class Buffer:
         self.data += data
 
     def pop(self, separator):
-        first, *rest = self.data.split(separator, maxsplit=1)
-        if not rest:
+        separator_index = self.data.index(separator)
+        first_data = self.data[:separator_index]
+        rest_data = self.data[separator_index+len(separator):]
+        if not rest_data:
             return None
         else:
-            self.data = separator.join(rest)
-            return first
+            self.data = rest_data
+            return first_data
 
     def popAll(self):
         temp = self.data
