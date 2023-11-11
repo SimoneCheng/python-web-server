@@ -1,4 +1,4 @@
-from parser.http_request_buffer import Buffer
+from parser.buffer import Buffer
 
 class HttpRequestParser:
     def __init__(self):
