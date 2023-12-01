@@ -14,15 +14,15 @@ class FormDataParser:
         return self.parsed_data
 
     def parse(self):
-        while not self.done_parsing_form_data:
-            self.parse_form_data()
+        self.parse_form_data()
 
     def parse_form_data(self):
-        data = self.buffer.pop(self.boundary)
-        if data is not None:
-            content_disposition, value = data.split('\r\n\r\n')
-            name_index = content_disposition.find('name=')
-            name = content_disposition[name_index + 5:]
-            self.parsed_data.update({ name.strip('"'): value.rstrip('\r\n') })
-        else:
-            self.done_parsing_form_data = True
+        while not self.done_parsing_form_data:
+            data = self.buffer.pop(self.boundary)
+            if data is not None:
+                content_disposition, value = data.split('\r\n\r\n')
+                name_index = content_disposition.find('name=')
+                name = content_disposition[name_index + 5:]
+                self.parsed_data.update({ name.strip('"'): value.rstrip('\r\n') })
+            else:
+                self.done_parsing_form_data = True

@@ -1,6 +1,7 @@
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from socket import socket
 from parser.http_request_parser import HttpRequestParser
+import json
 
 HOST = ""
 PORT = 8888
@@ -16,10 +17,9 @@ while True:
     client_connection, client_address = listen_socket.accept()
     parser = HttpRequestParser()
     request_data = client_connection.recv(1024).decode("utf-8")
-    print(parser.feed_data(request_data))
-    http_response = b"""\
-        HTTP/1.1 200 OK
-        Hello, World!
-    """
-    client_connection.sendall(http_response)
+    http_response = parser.feed_data(request_data)
+    http_response_json = json.dumps(http_response)
+    http_response_bytes = http_response_json.encode('utf-8')
+    print(http_response)
+    client_connection.sendall(http_response_bytes)
     client_connection.close()
