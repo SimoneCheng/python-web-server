@@ -1,5 +1,6 @@
 from parser.buffer import Buffer
 from parser.form_data_parser import FormDataParser
+from parser.json_parser import JsonParser
 
 class HttpRequestParser:
     def __init__(self):
@@ -45,10 +46,16 @@ class HttpRequestParser:
             self.done_parsing_body = True
         if not self.done_parsing_body:
             data = self.buffer.popAll()
-            content_type, rest = self.parsed_data['content-type'].split('; ')
-            if content_type == 'multipart/form-data':
+            content_type_arr = self.parsed_data['content-type'].split('; ')
+            if content_type_arr[0] == 'multipart/form-data':
                 form_data_parser = FormDataParser()
-                boundary = '--' + rest[9:] # 感覺不是一個好方法
+                boundary = '--' + content_type_arr[1][9:] # 感覺不是一個好方法
                 body = form_data_parser.feed_data(data[len(boundary):], boundary)
                 self.parsed_data.update({ 'body': body })
+            if content_type_arr[0] == 'application/json':
+                json_parser = JsonParser()
+                body = json_parser.feed_data(data)
+                self.parsed_data.update({ 'body': body })
+            else:
+                self.parsed_data.update({ 'body': data })
             self.done_parsing_body = True

@@ -4,7 +4,7 @@
 
 - [x] HTTP Request Parser
 - [x] Body Parser: FormData
-- [ ] Body Parser: JSON
+- [x] Body Parser: JSON
 - [ ] Sending Response
 - [ ] Error handle / Validation
 - [ ] Threading
