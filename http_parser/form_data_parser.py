@@ -1,4 +1,4 @@
-from parser.buffer import Buffer
+from http_parser.buffer import Buffer
 
 class FormDataParser:
     def  __init__(self):

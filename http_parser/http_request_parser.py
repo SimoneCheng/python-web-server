@@ -1,6 +1,6 @@
-from parser.buffer import Buffer
-from parser.form_data_parser import FormDataParser
-from parser.json_parser import JsonParser
+from http_parser.buffer import Buffer
+from http_parser.form_data_parser import FormDataParser
+from http_parser.json_parser import JsonParser
 
 class HttpRequestParser:
     def __init__(self):
